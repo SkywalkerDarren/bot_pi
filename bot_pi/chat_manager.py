@@ -49,5 +49,6 @@ class ChatManager:
                 }
             ],
         )
-        contents = resp.choices[0].message.content
-        return contents
+        content = resp.choices[0].message.content
+        print(f"ai: {content}")
+        return content
