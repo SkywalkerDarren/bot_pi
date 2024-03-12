@@ -8,6 +8,8 @@ class MyTestCase(unittest.TestCase):
     def test_something(self):
         a = os.listdir(config.PROJECT_ROOT)
         print(a)
+        cfg = config.CONFIG
+        print(cfg)
 
 
 if __name__ == '__main__':

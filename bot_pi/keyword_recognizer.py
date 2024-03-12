@@ -1,7 +1,9 @@
+import os
+
 from openwakeword import Model
 
 from audio_manager import AudioManager
-from config import MODELS_PATH
+from config import MODELS_PATH, CONFIG
 
 
 class KeywordRecognizer:
@@ -12,12 +14,14 @@ class KeywordRecognizer:
 
 class OpenWakeupWordRecognizer(KeywordRecognizer):
     def __init__(self):
+        print('Initializing OpenWakeupWordRecognizer...')
+        print(CONFIG.open_wakeup_word.model_type)
         self.oww_model = Model(
-            inference_framework='tflite',
-            wakeword_models=[f"{MODELS_PATH}/heyy_ro_bot_pai_40000.tflite"]
+            inference_framework=CONFIG.open_wakeup_word.model_type,
+            wakeword_models=[os.path.join(MODELS_PATH, CONFIG.open_wakeup_word.model_name)]
         )
         self.am = AudioManager()
-        self.threshold = 0.5
+        self.threshold = CONFIG.open_wakeup_word.sensitivity
 
     def recognize(self):
         print('Listening for keyword...')

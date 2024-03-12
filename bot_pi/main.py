@@ -1,7 +1,10 @@
+from config import CONFIG
 from voice_assistant import VoiceAssistant
 
 
 def run():
+    cfg = CONFIG
+    print(cfg)
     voice_assistant = VoiceAssistant()
     status = voice_assistant.run()
     if status != 0:

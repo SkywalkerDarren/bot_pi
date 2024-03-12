@@ -6,10 +6,10 @@ from config import CONFIG
 class SpeechRecognizer:
 
     def __init__(self):
-        speech_key = CONFIG["key"]
-        service_region = CONFIG["region"]
+        speech_key = CONFIG.azure_speech.key
+        service_region = CONFIG.azure_speech.region
         speech_config = speechsdk.SpeechConfig(subscription=speech_key, region=service_region)
-        speech_config.speech_recognition_language = "zh-CN"
+        speech_config.speech_recognition_language = CONFIG.azure_speech.recognition_language
         self._speech_config = speech_config
 
     def speech_to_text(self):

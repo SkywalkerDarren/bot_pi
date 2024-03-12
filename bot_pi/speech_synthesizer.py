@@ -10,9 +10,9 @@ class PushAudioOutputStreamSampleCallback(speechsdk.audio.PushAudioOutputStreamC
         super().__init__()
 
         self._stream = am.get_spk_stream(
-            rate=CONFIG["sample_rate"],
-            channels=CONFIG["channels"],
-            width=CONFIG["width"]
+            rate=CONFIG.speaker.sample_rate,
+            channels=CONFIG.speaker.channels,
+            width=CONFIG.speaker.width
         )
         self._stream.open()
 
@@ -29,12 +29,11 @@ class PushAudioOutputStreamSampleCallback(speechsdk.audio.PushAudioOutputStreamC
 class SpeechSynthesizer:
     def __init__(self):
         self._am = AudioManager()
-        speech_key = CONFIG["key"]
-        service_region = CONFIG["region"]
+        speech_key = CONFIG.azure_speech.key
+        service_region = CONFIG.azure_speech.region
 
         speech_config = speechsdk.SpeechConfig(subscription=speech_key, region=service_region)
-        speech_config.speech_recognition_language = "zh-CN"
-        speech_config.speech_synthesis_voice_name = "zh-CN-XiaoxiaoNeural"
+        speech_config.speech_synthesis_voice_name = CONFIG.azure_speech.voice_name
         self._speech_config = speech_config
 
     def text_to_speech(self, contents):

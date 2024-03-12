@@ -11,12 +11,12 @@ import azure.cognitiveservices.speech as speechsdk
 
 
 def azure_keyword_recognition():
-    speech_key = CONFIG["key"]
-    service_region = CONFIG["region"]
+    speech_key = CONFIG.azure_speech.key
+    service_region = CONFIG.azure_speech.region
 
     speech_config = speechsdk.SpeechConfig(subscription=speech_key, region=service_region)
-    speech_config.speech_recognition_language = "zh-CN"
-    speech_config.speech_synthesis_voice_name = "zh-CN-XiaoxiaoNeural"
+    speech_config.speech_recognition_language = CONFIG.azure_speech.recognition_language
+    speech_config.speech_synthesis_voice_name = CONFIG.azure_speech.voice_name
 
     model = speechsdk.KeywordRecognitionModel(f"{MODELS_PATH}/hey_bot_pi.table")
     speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config)
@@ -142,3 +142,22 @@ def pyaudio_play():
 
     # 关闭WAV文件
     wf.close()
+
+def docker_run():
+    import docker
+
+    def run_code(code_block: str):
+        client = docker.from_env()
+        container = client.containers.run("python:3.11.8", command=['python', '-c', code_block],)
+        print(container.decode('utf-8'))
+
+    # 使用示例
+    code_block = """\
+import sys
+print(sys.version)
+"""
+    output = run_code(code_block)
+    print("Output:", output)
+
+if __name__ == '__main__':
+    docker_run()

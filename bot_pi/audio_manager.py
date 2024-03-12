@@ -97,10 +97,10 @@ class AudioManager:
         return cls._instance
 
     def _init(self):
-        self._channels = CONFIG["channels"]
-        self._rate = CONFIG["sample_rate"]
-        self._chunk = CONFIG["chunk"]
-        self._width = CONFIG["width"]
+        self._channels = CONFIG.recorder.channels
+        self._rate = CONFIG.recorder.sample_rate
+        self._chunk = CONFIG.recorder.chunk
+        self._width = CONFIG.recorder.width
         self._p = pyaudio.PyAudio()
         self._format = self._p.get_format_from_width(self._width)
 
