@@ -1,7 +1,8 @@
-from audio_manager import AudioManager
 import azure.cognitiveservices.speech as speechsdk
 
+from audio_manager import AudioManager
 from config import CONFIG
+from speech_synthesize_service.speech_synthesizer import SpeechSynthesizer
 
 
 class PushAudioOutputStreamSampleCallback(speechsdk.audio.PushAudioOutputStreamCallback):
@@ -10,9 +11,9 @@ class PushAudioOutputStreamSampleCallback(speechsdk.audio.PushAudioOutputStreamC
         super().__init__()
 
         self._stream = am.get_spk_stream(
-            rate=CONFIG.speaker.sample_rate,
-            channels=CONFIG.speaker.channels,
-            width=CONFIG.speaker.width
+            rate=16000,
+            channels=1,
+            width=2
         )
         self._stream.open()
 
@@ -26,7 +27,7 @@ class PushAudioOutputStreamSampleCallback(speechsdk.audio.PushAudioOutputStreamC
         print("Push audio output stream closed.")
 
 
-class SpeechSynthesizer:
+class AzureSpeechSynthesizer(SpeechSynthesizer):
     def __init__(self):
         self._am = AudioManager()
         speech_key = CONFIG.azure_speech.key

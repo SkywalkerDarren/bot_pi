@@ -6,6 +6,7 @@ import pyaudio
 from openwakeword import Model
 from whispercpp import api, Whisper
 
+from chat_service.run_code_tool import _run_code
 from config import PROJECT_ROOT, CONFIG, MODELS_PATH
 import azure.cognitiveservices.speech as speechsdk
 
@@ -144,19 +145,14 @@ def pyaudio_play():
     wf.close()
 
 def docker_run():
-    import docker
-
-    def run_code(code_block: str):
-        client = docker.from_env()
-        container = client.containers.run("python:3.11.8", command=['python', '-c', code_block],)
-        print(container.decode('utf-8'))
 
     # 使用示例
     code_block = """\
 import sys
 print(sys.version)
 """
-    output = run_code(code_block)
+    code_block = "import os\n\nvolume = os.popen(\"amixer get Master\").read()\nprint('volume')"
+    output = _run_code(code_block)
     print("Output:", output)
 
 if __name__ == '__main__':

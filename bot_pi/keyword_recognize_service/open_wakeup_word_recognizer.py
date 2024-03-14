@@ -3,13 +3,8 @@ import os
 from openwakeword import Model
 
 from audio_manager import AudioManager
-from config import MODELS_PATH, CONFIG
-
-
-class KeywordRecognizer:
-
-    def recognize(self):
-        ...
+from config import CONFIG, MODELS_PATH
+from keyword_recognize_service.keyword_recognizer import KeywordRecognizer
 
 
 class OpenWakeupWordRecognizer(KeywordRecognizer):

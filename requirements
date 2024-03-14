@@ -4,3 +4,7 @@ pyaudio
 numpy
 openwakeword
 whispercpp
+psutil
+docker
+tiktoken
+duckduckgo-search

@@ -1,9 +1,10 @@
 import azure.cognitiveservices.speech as speechsdk
 
 from config import CONFIG
+from speech_recognize_service.speech_recognizer import SpeechRecognizer
 
 
-class SpeechRecognizer:
+class AzureSpeechRecognizer(SpeechRecognizer):
 
     def __init__(self):
         speech_key = CONFIG.azure_speech.key
@@ -32,4 +33,4 @@ class SpeechRecognizer:
         speech_recognizer.recognize_once()
         speech_recognizer.recognized.disconnect_all()
         del speech_recognizer
-        return speech_list
+        return ''.join(speech_list)

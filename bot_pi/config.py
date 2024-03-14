@@ -19,6 +19,8 @@ class RecorderConfig:
 class OpenAIConfig:
     key: str
     chat_model: str
+    voice: str
+    tts_model: str
 
 
 @dataclasses.dataclass
@@ -39,21 +41,15 @@ class GoogleConfig:
 
 
 @dataclasses.dataclass
-class SpeakerConfig:
-    sample_rate: int
-    width: int
-    channels: int
-
-@dataclasses.dataclass
 class OpenWakeupWordConfig:
     model_name: str
     model_type: str
     sensitivity: float
 
+
 @dataclasses.dataclass
 class Config:
     recorder: RecorderConfig
-    speaker: SpeakerConfig
     openai: OpenAIConfig
     azure_speech: AzureConfig
     google: GoogleConfig
@@ -64,7 +60,6 @@ with open(CONFIG_JSON_PATH, "r") as f:
     data = json.load(f)
     CONFIG = Config(
         recorder=RecorderConfig(**data.get("recorder", {})),
-        speaker=SpeakerConfig(**data.get("speaker", {})),
         openai=OpenAIConfig(**data.get("openai", {})),
         azure_speech=AzureConfig(**data.get("azure_speech", {})),
         google=GoogleConfig(**data.get("google", {})),
