@@ -13,6 +13,10 @@ class MicStream:
         self._chunk = chunk
         self._width = width
         self._channels = channels
+        self._start = 0
+
+    def current_duration(self):
+        return self._start / self._rate / self._width
 
     @classmethod
     def in_use(cls):
@@ -29,6 +33,7 @@ class MicStream:
     def open(self):
         if self._stream is not None:
             raise ValueError("Stream is already open")
+        self._start = 0
         self._stream = self._p.open(
             format=self._p.get_format_from_width(self._width),
             channels=self._channels,
@@ -38,7 +43,9 @@ class MicStream:
         )
 
     def read(self) -> np.ndarray:
-        return np.frombuffer(self._stream.read(self._chunk), dtype=np.int16)
+        data = self._stream.read(self._chunk)
+        self._start += len(data)
+        return np.frombuffer(data, dtype=np.int16)
 
     def close(self) -> None:
         if self._stream is None:
