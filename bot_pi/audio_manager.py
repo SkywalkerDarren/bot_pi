@@ -9,14 +9,14 @@ class MicStream:
 
     def __init__(self, p: pyaudio.PyAudio, rate: int, chunk: int, width: int, channels: int):
         self._p = p
-        self._rate = rate
-        self._chunk = chunk
-        self._width = width
-        self._channels = channels
+        self.rate = rate
+        self.chunk = chunk
+        self.width = width
+        self.channels = channels
         self._start = 0
 
     def current_duration(self):
-        return self._start / self._rate / self._width
+        return self._start / self.rate / self.width
 
     @classmethod
     def in_use(cls):
@@ -35,15 +35,15 @@ class MicStream:
             raise ValueError("Stream is already open")
         self._start = 0
         self._stream = self._p.open(
-            format=self._p.get_format_from_width(self._width),
-            channels=self._channels,
-            rate=self._rate,
+            format=self._p.get_format_from_width(self.width),
+            channels=self.channels,
+            rate=self.rate,
             input=True,
-            frames_per_buffer=self._chunk,
+            frames_per_buffer=self.chunk,
         )
 
     def read(self) -> np.ndarray:
-        data = self._stream.read(self._chunk)
+        data = self._stream.read(self.chunk)
         self._start += len(data)
         return np.frombuffer(data, dtype=np.int16)
 

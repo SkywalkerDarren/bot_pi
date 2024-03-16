@@ -9,3 +9,5 @@ docker
 tiktoken
 duckduckgo-search
 anthropic
+torchaudio
+onnxruntime
