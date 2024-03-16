@@ -11,3 +11,5 @@ duckduckgo-search
 anthropic
 torchaudio
 onnxruntime
+torch
+torchaudio
