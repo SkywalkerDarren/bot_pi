@@ -16,6 +16,12 @@ class RecorderConfig:
 
 
 @dataclasses.dataclass
+class AnthropicConfig:
+    key: str
+    model: str
+
+
+@dataclasses.dataclass
 class OpenAIConfig:
     key: str
     chat_model: str
@@ -51,6 +57,7 @@ class OpenWakeupWordConfig:
 class Config:
     recorder: RecorderConfig
     openai: OpenAIConfig
+    anthropic: AnthropicConfig
     azure_speech: AzureConfig
     google: GoogleConfig
     open_wakeup_word: OpenWakeupWordConfig
@@ -61,6 +68,7 @@ with open(CONFIG_JSON_PATH, "r") as f:
     CONFIG = Config(
         recorder=RecorderConfig(**data.get("recorder", {})),
         openai=OpenAIConfig(**data.get("openai", {})),
+        anthropic=AnthropicConfig(**data.get("anthropic", {})),
         azure_speech=AzureConfig(**data.get("azure_speech", {})),
         google=GoogleConfig(**data.get("google", {})),
         open_wakeup_word=OpenWakeupWordConfig(**data.get("open_wakeup_word", {}))
