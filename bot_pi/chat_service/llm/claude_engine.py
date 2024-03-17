@@ -96,16 +96,16 @@ assistant: {{"name": "foo_tool", "parameters": {{"foo": "bar"}}}}
     - 在回复用户问题的情况下，最终会通过TTS语音播报，所以不要输出markdown或代码块等无法听懂的信息，应该输出纯文本的回答
     - 你应该尽可能的使用中文回答用户的问题"""
 
-    def chat(self, message):
-        messages = [
+    def chat(self, message, histories: list):
+        messages = histories + [
             {
                 "role": "user",
                 "content": message
             }
         ]
         text = self.bootstrap(messages)
-
-        return text
+        print(f"ai回答: {text}")
+        return text, messages
 
     def bootstrap(self, messages):
         text = self._chat(messages)

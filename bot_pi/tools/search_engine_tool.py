@@ -19,6 +19,6 @@ class SearchEngineTool(BaseTool):
         keyword = validated_params.keyword
         result = self.search_client.search(keyword)
         if not result:
-            return "搜索失败"
+            return "网络异常，搜索失败"
         else:
             return result

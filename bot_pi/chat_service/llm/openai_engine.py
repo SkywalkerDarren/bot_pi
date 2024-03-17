@@ -61,14 +61,15 @@ class OpenAIEngine(LLMEngine):
     - 在回复用户问题的情况下，最终会通过TTS语音播报，所以不要输出markdown或代码块等无法听懂的信息，应该输出纯文本的回答
     - 你应该尽可能的使用中文回答用户的问题"""
 
-    def chat(self, message):
+    def chat(self, message, histories: list):
         """
 
         :param message:
+        :param histories:
         :return: AI的最终回答
         """
         self.use_tool_count = 0
-        messages = [
+        messages = histories + [
             ChatCompletionUserMessageParam(
                 role="user",
                 content=message
@@ -76,7 +77,7 @@ class OpenAIEngine(LLMEngine):
         ]
         content = self.bootstrap(messages)
         print(f"ai回答: {content}")
-        return content
+        return content, messages
 
     def bootstrap(self, messages):
         response = self._chat(messages)
@@ -87,7 +88,11 @@ class OpenAIEngine(LLMEngine):
                 assistant = f"使用工具: 名称: {tool.function.name}, 参数: {tool.function.arguments}"  # ai
                 print(f"assistant: {assistant}")
                 use_tool = next((t for t in self.tools if t.name == tool.function.name), None)
-                observer = use_tool.execute(json.loads(tool.function.arguments))
+                if tool.function.arguments.strip():
+                    args = json.loads(tool.function.arguments)
+                else:
+                    args = None
+                observer = use_tool.execute(args)
                 user = f"观察结果: {observer}"  # user
                 print(f"user: {user}")
                 messages.append(ChatCompletionToolMessageParam(

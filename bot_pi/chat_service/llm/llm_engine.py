@@ -12,5 +12,5 @@ class LLMEngine:
     def add_tool(self, tool: BaseTool):
         self.tools.append(tool)
 
-    def chat(self, message):
+    def chat(self, message, histories):
         pass

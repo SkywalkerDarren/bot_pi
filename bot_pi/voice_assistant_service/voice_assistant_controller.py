@@ -9,4 +9,5 @@ class VoiceAssistantController:
         return self._can_continue_chat
 
     def need_continue_chat(self):
+        print("下一轮聊天将继续进行")
         self._can_continue_chat = True

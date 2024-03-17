@@ -48,21 +48,21 @@ class MyTestCase(unittest.TestCase):
         engine = OpenAIEngine()
         engine.add_tool(TestTool())
         engine.add_tool(FakeSearchEngineTool())
-        text = engine.chat("查下树莓派的文档的地址")
+        text = engine.chat("查下树莓派的文档的地址", [])
         print(text)
-        text = engine.chat("测试工具")
+        text = engine.chat("测试工具", [])
         print(text)
 
     def test_bootstrapping(self):
         # engine = ClaudeEngine()
         engine = OpenAIEngine()
         engine.add_tool(TestTool())
-        text = engine.chat("测试，连续使用3次测试工具，每次只能调用1个工具")
+        text = engine.chat("测试，连续使用3次测试工具，每次只能调用1个工具", [])
         print(text)
 
     def test_openai_text(self):
         engine = OpenAIEngine()
-        text = engine.chat("介绍你自己")
+        text = engine.chat("介绍你自己", [])
         print(text)
 
 
