@@ -6,7 +6,7 @@ import pyaudio
 from openwakeword import Model
 from whispercpp import api, Whisper
 
-from chat_service.run_code_tool import _run_code
+from tools import _run_code
 from config import PROJECT_ROOT, CONFIG, MODELS_PATH
 import azure.cognitiveservices.speech as speechsdk
 
