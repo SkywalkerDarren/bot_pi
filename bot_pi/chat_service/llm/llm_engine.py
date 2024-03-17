@@ -1,4 +1,4 @@
-from chat_service.tools.ai_tools import BaseTool
+from chat_service.base_tool import BaseTool
 
 
 class LLMEngine:

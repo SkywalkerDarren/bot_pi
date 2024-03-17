@@ -3,8 +3,8 @@ from typing import Optional
 import docker
 from pydantic import BaseModel
 
-from chat_service.ai_tools import BaseTool
 from config import PROJECT_ROOT
+from chat_service.base_tool import BaseTool
 
 
 def _run_code(code_block: str):

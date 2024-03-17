@@ -5,7 +5,8 @@ import time
 import psutil
 from openai import OpenAI
 from openai._types import NOT_GIVEN
-from openai.types.chat import ChatCompletionToolMessageParam
+from openai.types.chat import ChatCompletionToolMessageParam, ChatCompletionSystemMessageParam, \
+    ChatCompletionUserMessageParam
 
 from chat_service.llm.llm_engine import LLMEngine
 from config import CONFIG
@@ -68,10 +69,10 @@ class OpenAIEngine(LLMEngine):
         """
         self.use_tool_count = 0
         messages = [
-            {
-                "role": "user",
-                "content": message
-            }
+            ChatCompletionUserMessageParam(
+                role="user",
+                content=message
+            )
         ]
         content = self.bootstrap(messages)
         print(f"ai回答: {content}")
@@ -94,6 +95,7 @@ class OpenAIEngine(LLMEngine):
                     content=observer,
                     tool_call_id=tool.id
                 ))
+            self.use_tool_count += len(tools)
             return self.bootstrap(messages)
         else:
             return self.get_text(response)
@@ -112,7 +114,12 @@ class OpenAIEngine(LLMEngine):
         response = self.ai.chat.completions.create(
             model=self.model,
             n=1,
-            messages=[{"role": "system", "content": self.system_prompt()}] + messages,
+            messages=[
+                         ChatCompletionSystemMessageParam(
+                             role="system",
+                             content=self.system_prompt()
+                         )
+                     ] + messages,
             tools=NOT_GIVEN if not self.tools else [t.get_info() for t in self.tools]
         )
         return response

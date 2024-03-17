@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
-from chat_service.ai_tools import BaseTool
 from search_service.search_service import SearchService
+from chat_service.base_tool import BaseTool
 
 
 class SearchEngineTool(BaseTool):
@@ -11,8 +11,8 @@ class SearchEngineTool(BaseTool):
         """
         keyword: str
 
-    def __init__(self, search_client: SearchService):
-        self.search_client = search_client
+    def __init__(self):
+        self.search_client = SearchService()
         super().__init__("search_engine", "使用搜索引擎搜索关键词，搜索时建议使用中文", self.SearchEngineParams)
 
     def run(self, validated_params: SearchEngineParams):

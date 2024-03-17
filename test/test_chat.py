@@ -5,8 +5,8 @@ from pydantic import BaseModel
 
 from chat_service.llm.claude_engine import ClaudeEngine
 from chat_service.llm.openai_engine import OpenAIEngine
-from chat_service.tools.ai_tools import BaseTool
-from chat_service.tools.search_engine_tool import SearchEngineTool
+from tools import BaseTool
+from tools.search_engine_tool import SearchEngineTool
 
 
 class TestTool(BaseTool):
