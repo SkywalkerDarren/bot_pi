@@ -2,8 +2,8 @@ import os
 import unittest
 import wave
 
-from chat_service.audio_service.audio_manager import AudioManager
-from chat_service.audio_service.vad import VAD
+from audio_service.audio_manager import AudioManager
+from audio_service.vad import VAD
 
 
 class MyTestCase(unittest.TestCase):

@@ -4,8 +4,8 @@ import wave
 import numpy as np
 from whispercpp import api, Whisper
 
-from chat_service.audio_service.audio_manager import AudioManager
-from chat_service.audio_service.vad import VAD
+from audio_service.audio_manager import AudioManager
+from audio_service.vad import VAD
 from config import PROJECT_ROOT
 from speech_recognize_service.speech_recognizer import SpeechRecognizer
 

@@ -1,6 +1,6 @@
 import azure.cognitiveservices.speech as speechsdk
 
-from chat_service.audio_service.audio_manager import AudioManager
+from audio_service.audio_manager import AudioManager
 from config import CONFIG
 from speech_synthesize_service.speech_synthesizer import SpeechSynthesizer
 

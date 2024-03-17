@@ -2,7 +2,7 @@ import os
 
 from openwakeword import Model
 
-from chat_service.audio_service.audio_manager import AudioManager
+from audio_service.audio_manager import AudioManager
 from config import CONFIG, MODELS_PATH
 from keyword_recognize_service.keyword_recognizer import KeywordRecognizer
 
