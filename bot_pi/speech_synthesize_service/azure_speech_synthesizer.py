@@ -18,7 +18,6 @@ class PushAudioOutputStreamSampleCallback(speechsdk.audio.PushAudioOutputStreamC
         self._stream.open()
 
     def write(self, audio_buffer: memoryview) -> int:
-        print("{} bytes received.".format(audio_buffer.nbytes))
         self._stream.write(bytes(audio_buffer))
         return audio_buffer.nbytes
 

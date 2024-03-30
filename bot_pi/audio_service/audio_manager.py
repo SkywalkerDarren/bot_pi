@@ -5,7 +5,6 @@ from config import CONFIG
 
 
 class MicStream:
-    _stream = None
 
     def __init__(self, p: pyaudio.PyAudio, rate: int, chunk: int, width: int, channels: int):
         self._p = p
@@ -14,13 +13,10 @@ class MicStream:
         self.width = width
         self.channels = channels
         self._start = 0
+        self._stream = None
 
     def current_duration(self):
         return self._start / self.rate / self.width
-
-    @classmethod
-    def in_use(cls):
-        return cls._stream is not None
 
     def __enter__(self):
         self.open()

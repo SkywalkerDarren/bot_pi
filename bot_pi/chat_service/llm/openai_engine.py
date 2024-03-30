@@ -15,7 +15,7 @@ from config import CONFIG
 class OpenAIEngine(LLMEngine):
     def __init__(self):
         super().__init__()
-        self.ai = OpenAI(api_key=CONFIG.openai.key)
+        self.ai = OpenAI(api_key=CONFIG.openai.key, max_retries=3)
         self.model = CONFIG.openai.chat_model
         self.use_tool_count = 0
         self.max_use_tool_count = 10
@@ -88,10 +88,7 @@ class OpenAIEngine(LLMEngine):
                 assistant = f"使用工具: 名称: {tool.function.name}, 参数: {tool.function.arguments}"  # ai
                 print(f"assistant: {assistant}")
                 use_tool = next((t for t in self.tools if t.name == tool.function.name), None)
-                if tool.function.arguments.strip():
-                    args = json.loads(tool.function.arguments)
-                else:
-                    args = None
+                args = self.try_get_args(tool.function.arguments)
                 observer = use_tool.execute(args)
                 user = f"观察结果: {observer}"  # user
                 print(f"user: {user}")
@@ -104,6 +101,18 @@ class OpenAIEngine(LLMEngine):
             return self.bootstrap(messages)
         else:
             return self.get_text(response)
+
+    def try_get_args(self, args: str):
+        args = args.strip()
+        if args.startswith("'") and args.endswith("'"):
+            args = args[1:-1]
+        elif args.startswith('"') and args.endswith('"'):
+            args = args[1:-1]
+        args = args.strip()
+        if args:
+            return json.loads(args)
+        else:
+            return None
 
     def try_get_tool(self, response):
         if response.choices[0].message.tool_calls:

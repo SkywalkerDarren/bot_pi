@@ -3,9 +3,9 @@ from typing import Optional
 
 from pydantic import BaseModel
 
+from chat_service.base_tool import BaseTool
 from chat_service.llm.claude_engine import ClaudeEngine
 from chat_service.llm.openai_engine import OpenAIEngine
-from tools import BaseTool
 from tools.search_engine_tool import SearchEngineTool
 
 
@@ -34,14 +34,14 @@ class MyTestCase(unittest.TestCase):
         engine = ClaudeEngine()
         engine.add_tool(TestTool())
         engine.add_tool(FakeSearchEngineTool())
-        text = engine.chat("查下树莓派的文档的地址")
+        text = engine.chat("查下树莓派的文档的地址", [])
         print(text)
-        text = engine.chat("测试工具")
+        text = engine.chat("测试工具", [])
         print(text)
 
     def test_claude_text(self):
         engine = ClaudeEngine()
-        text = engine.chat("介绍你自己")
+        text = engine.chat("介绍你自己", [])
         print(text)
 
     def test_openai_tool(self):

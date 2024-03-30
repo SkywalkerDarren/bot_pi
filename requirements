@@ -14,3 +14,4 @@ onnxruntime
 torch
 torchaudio
 anthropic
+pyside6

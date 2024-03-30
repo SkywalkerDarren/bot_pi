@@ -5,6 +5,7 @@ import os
 PROJECT_ROOT = os.path.dirname(os.path.dirname(__file__))
 CONFIG_JSON_PATH = os.path.join(PROJECT_ROOT, "config", "config.json")
 MODELS_PATH = os.path.join(PROJECT_ROOT, "models")
+ASSETS_PATH = os.path.join(PROJECT_ROOT, "assets")
 
 
 @dataclasses.dataclass

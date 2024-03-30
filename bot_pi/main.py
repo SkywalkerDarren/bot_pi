@@ -3,6 +3,7 @@ from chat_service.llm import get_llm
 from keyword_recognize_service import get_keyword_recognizer
 from speech_recognize_service import get_speech_recognizer
 from speech_synthesize_service import get_speech_synthesizer
+from tools.meeting_tool import StartMeetingTool, StopMeetingTool, GetMeetingContent
 from tools.run_code_tool import RunCodeTool
 from tools.search_engine_tool import SearchEngineTool
 from tools.voice_assistant_tool import ContinueChatTool
@@ -19,6 +20,9 @@ def run():
     engine.add_tool(RunCodeTool())
     engine.add_tool(SearchEngineTool())
     engine.add_tool(ContinueChatTool(voice_assistant_controller))
+    engine.add_tool(StartMeetingTool())
+    engine.add_tool(StopMeetingTool())
+    engine.add_tool(GetMeetingContent())
     chat_manager = ChatManager(engine)
     voice_assistant = VoiceAssistant(
         keyword_recognizer,
