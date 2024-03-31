@@ -28,8 +28,8 @@ class VoiceAssistant:
         self.chat_manager = chat_manager
         self._am = AudioManager()
 
-    def play_notify_sound(self):
-        with wave.open(os.path.join(ASSETS_PATH, "notify.wav")) as wav:
+    def play_notify_sound(self, name: str):
+        with wave.open(os.path.join(ASSETS_PATH, name)) as wav:
             spk = self._am.get_spk_stream(
                 rate=wav.getframerate(),
                 channels=wav.getnchannels(),
@@ -46,13 +46,14 @@ class VoiceAssistant:
         else:
             self.voice_assistant_controller.reset_continue_chat()
 
-        self.play_notify_sound()
+        self.play_notify_sound("notify.wav")
 
         try:
             t1 = time.time()
             speech = self.speech_recognizer.speech_to_text()
             t2 = time.time()
             print(f"stt耗时：{t2 - t1}s")
+            self.play_notify_sound("finish_notify.wav")
         except Exception as e:
             traceback.print_exc()
             print(e)
@@ -82,7 +83,7 @@ class VoiceAssistant:
             print(e)
 
     def run(self) -> int:
-        self.play_notify_sound()
+        self.play_notify_sound("notify.wav")
         while True:
             try:
                 self.work()
