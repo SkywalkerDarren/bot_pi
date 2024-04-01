@@ -1,5 +1,7 @@
 import os
 
+import openwakeword.utils
+import psutil
 from openwakeword import Model
 
 from audio_service.audio_manager import AudioManager
@@ -11,9 +13,12 @@ class OpenWakeupWordRecognizer(KeywordRecognizer):
     def __init__(self):
         print('Initializing OpenWakeupWordRecognizer...')
         print(CONFIG.open_wakeup_word.model_type)
+        openwakeword.utils.download_models(target_directory=MODELS_PATH)
         self.oww_model = Model(
             inference_framework=CONFIG.open_wakeup_word.model_type,
-            wakeword_models=[os.path.join(MODELS_PATH, CONFIG.open_wakeup_word.model_name)]
+            wakeword_models=[os.path.join(MODELS_PATH, CONFIG.open_wakeup_word.model_name)],
+            melspec_model_path=os.path.join(MODELS_PATH, f"melspectrogram.{CONFIG.open_wakeup_word.model_type}"),
+            embedding_model_path=os.path.join(MODELS_PATH, f"embedding_model.{CONFIG.open_wakeup_word.model_type}")
         )
         self.am = AudioManager()
         self.threshold = CONFIG.open_wakeup_word.sensitivity

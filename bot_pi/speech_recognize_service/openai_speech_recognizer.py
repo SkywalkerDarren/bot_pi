@@ -15,8 +15,7 @@ class OpenAISpeechRecognizer(SpeechRecognizer):
         self.openai_api_key = CONFIG.openai.key
         self.open_ai = openai.OpenAI(api_key=self.openai_api_key)
         self.am = AudioManager()
-        self.vad = VAD().get_vad()
-        self.i2f = VAD.int2float
+        self.vad = VAD()
 
     def speech_to_text(self):
         mic = self.am.get_mic_stream()
@@ -29,13 +28,24 @@ class OpenAISpeechRecognizer(SpeechRecognizer):
                 f.setsampwidth(recorder.width)
                 f.setframerate(recorder.rate)
 
+                last_state_activity = False  # 上一次的状态，默认为静音
+                self.vad.reset_states()
+
                 while True:
-                    wav_int16 = recorder.read()
-                    f.writeframes(wav_int16)
-                    wav_float32 = self.i2f(wav_int16)
-                    result = self.vad(wav_float32)
-                    if result and 'end' in result:
-                        break
+                    wav = recorder.read()
+                    f.writeframes(wav)
+                    chunk = recorder.chunk
+                    self.vad(wav, chunk)
+                    is_activity = self.vad.is_activity()
+                    if is_activity:
+                        print('activity')
+                        last_state_activity = True  # 如果检测到活动，更新状态为活动
+                    else:
+                        print('silence')
+                        if last_state_activity:  # 如果上一次是活动而这一次是静音，表示发生了状态变化
+                            print('Ending recording due to transition from activity to silence.')
+                            break  # 结束录制
+                        last_state_activity = False  # 更新状态为静音
 
         print('recording done')
         mem_file.seek(0)  # 重置内存文件的指针到开始位置

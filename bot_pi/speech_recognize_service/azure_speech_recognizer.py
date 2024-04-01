@@ -29,20 +29,27 @@ class AzureSpeechRecognizer(SpeechRecognizer):
 
     def push_stream_writer(self, stream, manual_control):
         mic_stream = self._mic_stream
-        v = self._vad.get_vad()
 
         with mic_stream as mic:
+            self._vad.reset_states()
             while True:
                 data = mic.read()
                 frame = data.tobytes()
                 # print('read {} bytes'.format(len(frame)))
                 stream.write(frame)
                 if not manual_control:
-                    audio_float32 = self._vad.int2float(data)
-                    result = v(audio_float32)
-                    if result and 'end' in result:
-                        print('voiced')
-                        break
+                    chunk = mic.chunk
+                    self._vad(data, chunk)
+                    is_activity = self._vad.is_activity()
+                    if is_activity:
+                        print('activity')
+                        last_state_activity = True  # 如果检测到活动，更新状态为活动
+                    else:
+                        print('silence')
+                        if last_state_activity:  # 如果上一次是活动而这一次是静音，表示发生了状态变化
+                            print('Ending recording due to transition from activity to silence.')
+                            break  # 结束录制
+                        last_state_activity = False  # 更新状态为静音
                 else:
                     if not self.push_flag:
                         break
