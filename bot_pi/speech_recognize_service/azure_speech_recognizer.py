@@ -32,6 +32,7 @@ class AzureSpeechRecognizer(SpeechRecognizer):
 
         with mic_stream as mic:
             self._vad.reset_states()
+            last_state_activity = False  # 上一次的状态，默认为静音
             while True:
                 data = mic.read()
                 frame = data.tobytes()
